@@ -1,17 +1,9 @@
 package br.com.estudos.nelson.screenmatch;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import br.com.estudos.nelson.screenmatch.model.DadosEpisodio;
-import br.com.estudos.nelson.screenmatch.model.DadosSerie;
-import br.com.estudos.nelson.screenmatch.model.DadosTemporada;
-import br.com.estudos.nelson.screenmatch.service.ConsumoApi;
-import br.com.estudos.nelson.screenmatch.service.ConverteDados;
+import br.com.estudos.nelson.screenmatch.principal.Principal;
 
 @SpringBootApplication
 public class ScreenmatchApplication implements CommandLineRunner {
@@ -22,30 +14,7 @@ public class ScreenmatchApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		var consumoApi = new ConsumoApi();
-		var json = consumoApi.obterDados("https://omdbapi.com/?t=game+of+thrones&apikey=180a3954");
-		System.out.println(json);
-
-		// json = consumoApi.obterDados("https://coffee.alexflipnote.dev/random.json");
-		// System.out.println(json);
-
-		ConverteDados conversor = new ConverteDados();
-		DadosSerie dados = conversor.obterDados(json, DadosSerie.class);
-		System.out.println(dados);
-
-		json = consumoApi.obterDados("https://omdbapi.com/?t=game+of+thrones&season=4&episode=8&apikey=180a3954");
-		DadosEpisodio dadosEpisodio = conversor.obterDados(json,DadosEpisodio.class);
-		System.out.println(dadosEpisodio);
-
-		List<DadosTemporada> temporadas = new ArrayList<>();
-
-		for (int i = 1; i<=dados.totalTemporadas(); i++){
-			json = consumoApi.obterDados("https://omdbapi.com/?t=game+of+thrones&season="+i+"&apikey=180a3954");
-			DadosTemporada dadosTemporada = conversor.obterDados(json, DadosTemporada.class);
-			temporadas.add(dadosTemporada);			
-		}
-
-		temporadas.forEach(System.out::println);
+		Principal principal = new Principal();
+		principal.exibeMenu();
 	}
-
 }
